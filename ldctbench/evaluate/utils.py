@@ -9,6 +9,7 @@ import torch
 import torch.nn as nn
 from skimage.metrics import mean_squared_error, structural_similarity
 from torchmetrics.functional.image import visual_information_fidelity
+from matplotlib.pyplot import imsave
 
 import ldctbench
 from ldctbench.evaluate.ldct_iqa import LDCTIQA
@@ -349,3 +350,18 @@ def save_raw(filepath, filename, X):
             + ".raw",
         )
     )
+    float_img = (X - X.min()) / (X.max() - X.min())
+    float_img = float_img[X.shape[0] // 2,:,:]
+    float_img = np.squeeze(float_img)
+    uint8_img = (float_img * 255).astype(np.uint8)
+    imsave(os.path.join(
+            filepath,
+            filename
+            + "_"
+            + str(X.shape[1])
+            + "x"
+            + str(X.shape[2])
+            + "x"
+            + str(X.shape[0])
+            + ".jpg",
+        ), uint8_img, cmap='gray')

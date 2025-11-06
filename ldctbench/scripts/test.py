@@ -112,6 +112,9 @@ def main():
         from ldctbench.evaluate.ldct_iqa import LDCTIQA
 
         ldct_iqa = LDCTIQA(device=DEV)
+    else:
+        ldct_iqa = []
+
 
     with torch.no_grad():
         for patient in (pbar := tqdm(data, desc="Inference for patient: ")):
